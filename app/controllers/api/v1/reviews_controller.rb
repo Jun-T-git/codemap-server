@@ -1,6 +1,7 @@
 module Api
     module V1
         class ReviewsController < ApplicationController
+
             def index
                 reviews = Review.order('created_at desc')
                 render json: {status: 'SUCCESS', message: 'Loaded reviews', data: reviews}, status: :ok
@@ -13,6 +14,10 @@ module Api
     
             def create
                 review = Review.new(review_params)
+                user = User.find(params[:user_id])
+                book = Book.find(params[:book_id])
+                review.user_id = user.id
+                review.book_id = book.id
         
                 if review.save
                     render json: {status: 'SUCCESS', message: 'Saved review', data: review}, status: :ok
@@ -40,7 +45,7 @@ module Api
             private
     
                 def review_params
-                    params.permit(:title, :content, :recommendation_level, :difficulty_level)
+                    params.require(:review).permit(:title, :content, :recommendation_level, :difficulty_level)
                 end
         end
     end
