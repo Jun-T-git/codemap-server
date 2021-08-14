@@ -7,7 +7,7 @@ module Api
             end
     
             def show
-                user = User.find(params[:id])
+                user = User.select(:id, :name, :image, :email, :created_at, :updated_at).find(params[:id])
                 render json: {status: 'SUCCESS', message: 'Loaded user', data: user}, status: :ok
             end
     
