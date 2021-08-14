@@ -8,7 +8,9 @@ module Api
     
             def show
                 book = Book.find(params[:id])
-                render json: {status: 'SUCCESS', message: 'Loaded book', data: book}, status: :ok
+                reviews = Review.where(book_id: book.id)
+                response_data = {book: book, reviews: reviews }
+                render json: {status: 'SUCCESS', message: 'Loaded book', data: response_data}, status: :ok
             end
     
             def create
